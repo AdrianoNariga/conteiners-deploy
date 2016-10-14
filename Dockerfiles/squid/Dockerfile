@@ -6,6 +6,9 @@ RUN apt install squid3 -y \
  && rm -rf /var/lib/apt/lists/*
 
 COPY squid.conf /etc/squid3/squid.conf
+COPY start.sh	/
+
+RUN chmod +x /start.sh
 
 EXPOSE 3128/tcp
-CMD ["/usr/sbin/squid3"]
+CMD ["/start.sh"]
