@@ -6,10 +6,10 @@
 #     -v /home/alrodrigues/puppet_modules:/etc/puppet/environments/puppet_modules \
 #     -p 443:443 -p 8443:8443 -p 8140:8140 nariga/foreman:11.2
 # variavel HOSTNAME deve ser a mesma para o dockerfile e o conteiner
-FROM ubuntu:14.04
+FROM ubuntu:14.04.5
 MAINTAINER NarigaCDO "narigacdo@gmail.com"
 
-ENV HOSTNAME foreman.conteiner
+ENV HOSTNAME docker-foreman.cloud
 ENV FOREMANVER 1.13
 ENV DEBIAN_FRONTEND noninteractive
 ENV FOREOPTS --enable-foreman-compute-vmware \
@@ -23,7 +23,7 @@ ENV FOREOPTS --enable-foreman-compute-vmware \
         --puppet-show-diff=true \
         --puppet-server-envs-dir=/etc/puppetlabs/code/environments
 
-RUN apt-get update && \
+RUN apt-get update ; \
     apt-get upgrade -y && \
     apt-get -y install ca-certificates wget && \
     wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb && \
@@ -34,7 +34,7 @@ RUN apt-get update && \
     wget -q http://deb.theforeman.org/pubkey.gpg -O- | apt-key add - && \
     apt-get install -y software-properties-common git sshpass && \
     apt-add-repository ppa:ansible/ansible && \
-    apt-get update && \
+    apt-get update ; \
     apt-get install -y foreman-installer ansible python-requests ruby-smart-proxy-ansible && \
     echo "export TERM=vt100" >> /root/.bashrc && \
     LANG=en_US.UTF-8 locale-gen --purge en_US.UTF-8 && \
@@ -49,9 +49,9 @@ RUN apt-get update && \
     sed -i -e "s/START=no/START=yes/g" /etc/default/foreman; \
     sed -i.bak "s/certname*.*/certname = $HOSTNAME/g" /etc/puppetlabs/puppet/puppet.conf
 
-RUN ssh-keygen -f /usr/share/foreman/.ssh/id_rsa -t rsa -N ''
-ADD config /usr/share/foreman/.ssh/config
-RUN chown -R foreman. /usr/share/foreman/.ssh/
+#RUN ssh-keygen -f /usr/share/foreman/.ssh/id_rsa -t rsa -N ''
+#ADD config /usr/share/foreman/.ssh/config
+#RUN chown -R foreman. /usr/share/foreman/.ssh/
 ADD cli_config.yml /etc/hammer/cli_config.yml
 RUN rm /root/.hammer/cli.modules.d/foreman.yml
 RUN ln -s /etc/hammer/cli_config.yml /root/.hammer/cli.modules.d/foreman.yml
