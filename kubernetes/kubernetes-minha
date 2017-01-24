@@ -1,0 +1,12 @@
+kubectl cluster-info (host api sendo usada, e endereco dashboard)
+
+## deployment and pod
+kubectl run kubernetes-bootcamp \
+	--image=docker.io/jocatalin/kubernetes-bootcamp:v1 \
+	--port=8080 (gera um deployment e um pod)
+
+## services and expose
+kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+(gera um servico com uma porta aleatoria no node do conteiner redirecionando para 8080)
+kubectl describe services/kubernetes-bootcamp
+(exibe a porta usada em NodePort)
