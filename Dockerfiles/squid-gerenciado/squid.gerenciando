@@ -1,0 +1,110 @@
+http_port 3128
+icp_port 3130
+hierarchy_stoplist cgi-bin ?
+acl QUERY urlpath_regex cgi-bin \?
+no_cache deny QUERY
+cache_mem 1500 MB
+cache_swap_low 90
+cache_swap_high 95
+maximum_object_size 9216 KB
+ipcache_size 3072
+ipcache_low 90
+ipcache_high 95
+fqdncache_size 1024
+cache_replacement_policy lru
+memory_replacement_policy lru
+cache_access_log /var/log/squid3/access.log
+cache_store_log none
+
+auth_param basic program /usr/lib/squid3/basic_ldap_auth -R -b "dc=nada,dc=nada" -D "cn=nada,ou=nada,dc=nada,dc=nada" -w "nada" -f sAMAccountName=%s -h ip_nada
+auth_param basic realm Este acesso sera registrado Digite seu usuário e senha do Windows  
+auth_param basic children 5
+auth_param basic credentialsttl 15 minutes
+
+unlinkd_program /usr/lib/squid3/unlinkd
+
+external_acl_type ldap_group %LOGIN /usr/lib/squid3/ext_ldap_group_acl -R -b "dc=nada,dc=nada" -D "cn=nada,ou=nada,dc=nada,dc=nada" -w "nada" -f "(&(objectclass=person)(sAMAccountName=%v)(memberof=cn=%a,ou=Internet,dc=ame,dc=local))" -h ip_nada
+
+acl SSL_ports port 443 563 9141
+acl Safe_ports port 80 # http
+acl Safe_ports port 81
+acl Safe_ports port 82
+acl Safe_ports port 85
+acl Safe_ports port 21 # ftp
+acl Safe_ports port 443 563 # https, snews
+acl Safe_ports port 70 # gopher
+acl Safe_ports port 210 # wais
+acl Safe_ports port 1025-65535 # unregistered ports
+acl Safe_ports port 280 # http-mgmt
+acl Safe_ports port 488 # gss-http
+acl Safe_ports port 591 # filemaker
+acl Safe_ports port 777 # multiling http
+acl CONNECT method CONNECT
+
+
+acl block_ip src "/etc/squid3/AD/ips_bloqueados"
+acl dst_msn dstdomain -i "/etc/squid3/AD/msn_domain"
+
+acl block_arq urlpath_regex -i  .com$ .scr$ .mp3$ .mpeg$  .wma$ .wmv$ .mpg$ .avi$ .pif$ 
+acl palavra_download url_regex -i "/etc/squid3/AD/palavra_download-url"
+
+acl libera_sites url_regex -i "/etc/squid3/AD/libera_almoco"  #sites de "libera_almoco" 
+acl almoco time SMTWHFA 12:00-13:30                          #libera  acesso  das  12 as 13:30 #de segunda a domingo.
+
+acl libera_restritos dstdomain "/etc/squid3/AD/sites_liberados"  # Libera alguns sites p/user s/acesso
+
+acl dominio_bloqueado dstdomain -i "/etc/squid3/AD/block_dominio"       
+acl dominio_liberado dstdomain -i "/etc/squid3/AD/libera_dominio" 
+acl sex url_regex -i "/etc/squid3/AD/porno"
+acl nosex url_regex -i "/etc/squid3/AD/naoporno"                           
+
+acl ldapAcessoRestrito external ldap_group GR_AcessoRestrito 	# Grupo de acesso com restriÃ§s 
+acl ldapAcessoPadrao external ldap_group GR_AcessoPadrao   	# Acesso a internet padrÃ£
+acl ldapAcessoTotal external ldap_group GR_AcessoTotal 		# Acesso total a internet
+acl ldapAcessoDownload external ldap_group GR_AcessoDownload 	# Libera download de arquivo com extensÃµbloqueadas.
+
+acl download_url url_regex "/etc/squid3/AD/libera_download-url" 
+
+acl libera_msn dstdomain -i "/etc/squid3/AD/sites_msn"
+
+acl numeric_IPs dstdom_regex ^(([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)|(\[([0-9af]+)?:([0-9af:]+)?:([0-9af]+)?\])):443
+acl Skype_UA browser ^skype
+http_access allow CONNECT numeric_IPS Skype_UA
+
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+http_access deny block_ip
+http_access allow libera_restritos
+http_access allow dominio_liberado
+http_access deny ldapAcessoRestrito !libera_restritos
+
+http_access allow ldapAcessoTotal 
+http_access deny dst_msn
+http_access allow dominio_liberado
+http_access allow libera_sites almoco
+http_access deny dominio_bloqueado
+http_access allow ldapAcessoDownload block_arq 
+http_access allow ldapAcessoDownload palavra_download
+http_access allow download_url
+http_access deny block_arq 
+#http_access allow nosex
+http_access deny nosex
+http_access deny sex
+http_access allow ldapAcessoPadrao
+
+http_access allow libera_msn
+
+http_access allow manager localhost
+http_access deny manager
+http_access deny all
+icp_access allow all
+
+visible_hostname web.ame.local
+unique_hostname web.ame.local
+append_domain .ame.local
+acl local-servers dstdomain ame.local
+acl local-serverspr dstdomain ame.local
+
+always_direct allow local-servers
+always_direct allow local-serverspr
+error_directory /usr/share/squid3/errors/pt-br
