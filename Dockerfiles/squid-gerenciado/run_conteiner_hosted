@@ -3,4 +3,5 @@ docker run -ti -d --name proxy_squid \
 	-v $PWD/$2:/etc/squid3/squid.conf \
 	-v $PWD/AD:/etc/squid3/AD \
 	-p $1:3128:3128 -p $1:80:80 \
+	--net=host \
 	narigacdo/squid:gerenciado
