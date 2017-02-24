@@ -1,0 +1,16 @@
+#!/bin/bash
+
+volume_source(){
+	sudo mkdir /media/gluster/squid
+	sudo chmod 777 /media/gluster/squid
+	sudo cp squid.zerado /media/gluster/squid/squid.conf
+	docker service create \
+	        --network ingress \
+		--mount type=bind,source=/media/gluster/squid,target=/var/log/squid3 \
+		--mount type=bind,source=/media/gluster/squid,target=/var/spool/squid3 \
+		--mount type=bind,source=/media/gluster/squid/squid.conf,target=/etc/squid3/squid.conf \
+	        --name squid_gerenciado -p 3128:3128 \
+		narigacdo/squid:gerenciado
+}
+
+volume_source
