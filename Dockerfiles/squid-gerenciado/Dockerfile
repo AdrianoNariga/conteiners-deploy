@@ -14,11 +14,12 @@ COPY security.conf /etc/apache2/conf-enabled/security.conf
 COPY apache2.conf /etc/apache2/apache2.conf
 COPY sarg.conf /etc/sarg/sarg.conf
 COPY sarg.apache /etc/apache2/conf-available/sarg.conf
-COPY start.sh	/
+COPY start.sh /
 
 RUN a2enconf sarg
-
 RUN chmod +x /start.sh
+
+VOLUME ["/var/spool/squid","/var/spool/squid3","/var/log/squid3","/etc/squid3"]
 
 EXPOSE 3128/tcp
 CMD ["/start.sh"]
