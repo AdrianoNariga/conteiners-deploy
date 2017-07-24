@@ -1,0 +1,5 @@
+#!/bin/bash
+docker run -d -p 192.168.111.251:4440:4440 \
+	-e RUNDECK_ADMIN_PASSWORD='VuDa22)$adm' \
+	-e SERVER_URL=http://rundeck.home.jab:4440 \
+	--name rundeck -t jordan/rundeck

@@ -1,0 +1,24 @@
+#!/bin/bash
+# create /var/lib/mysql as persistent volume storage
+docker run -d -v /var/lib/mysql --name zabbix-db-storage busybox:latest
+
+# start DB for Zabbix - default 1GB innodb_buffer_pool_size is used
+docker run \
+    -d \
+    --name zabbix-db \
+    --volumes-from zabbix-db-storage \
+    --env="MARIADB_USER=zabbix" \
+    --env="MARIADB_PASS=my_password" \
+    zabbix/zabbix-db-mariadb
+
+# start Zabbix linked to started DB    
+docker run \
+    -d \
+    --name zabbix \
+    -p 192.168.111.8:80:80 \
+    -p 192.168.111.9:10051:10051 \
+    --link zabbix-db:zabbix.db \
+    --env="ZS_DBHost=zabbix.db" \
+    --env="ZS_DBUser=zabbix" \
+    --env="ZS_DBPassword=my_password" \
+    zabbix/zabbix-3.0:latest

@@ -1,0 +1,15 @@
+#!/bin/bash
+NAME_ASTERISK=asterisk
+NAME_FASTAGI=fastagi
+
+# Run the fastagi container.
+docker run \
+    -p 192.168.111.12:4573:4573 \
+    --name $NAME_FASTAGI \
+    -d -t dougbtv/fastagi
+
+# Run the main asterisk container.
+docker run \
+    --name $NAME_ASTERISK \
+    --net=host \
+    -d -t dougbtv/asterisk

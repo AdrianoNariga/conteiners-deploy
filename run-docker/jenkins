@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run --name jenkins.home.jab -p 192.168.111.12:80:8080 -p 192.168.111.12:50000:50000 jenkins

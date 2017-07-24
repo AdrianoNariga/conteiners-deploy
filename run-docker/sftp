@@ -1,0 +1,5 @@
+#!/bin/bash
+docker run \
+    -v /media/storage-00/sftp:/home/nariga/share \
+    -p 192.168.111.20:2222:22 -d atmoz/sftp \
+    'nariga:Cd0@1neT:1001'

@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -h mediadrop-zoo.home.jab -d --name mediadrop-zoo -p 192.168.111.16:8182:8080 acaranta/mediadrop

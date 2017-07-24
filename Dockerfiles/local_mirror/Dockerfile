@@ -14,7 +14,5 @@ ADD 000-default.conf /etc/apache2/sites-available/000-default.conf
 EXPOSE 80
 EXPOSE 443
 
-CMD ls /var/run/apache2/apache2.pid && \
-    rm -f /var/run/apache2/apache2.pid && \
-    /usr/sbin/apache2ctl -D FOREGROUND || \
+CMD source /etc/apache2/envvars ; /usr/sbin/apache2ctl -D FOREGROUND || \
     /usr/sbin/apache2ctl -D FOREGROUND

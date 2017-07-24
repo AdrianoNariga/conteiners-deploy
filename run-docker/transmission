@@ -1,0 +1,5 @@
+#!/bin/bash
+docker run -ti \
+--name transmission -p 192.168.111.251:8014:9091 \
+-v /media/storage-00/dlna/:/var/lib/transmission-daemon/downloads/ \
+dperson/transmission
