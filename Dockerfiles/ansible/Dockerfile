@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER NarigaCDO "narigacdo@gmail.com"
 
 RUN apt update && \
-    apt install libsasl2-dev libldap2-dev \
+    apt install libsasl2-dev libldap2-dev iputils-ping \
                 libssl-dev python-dev build-essential \
                 python-virtualenv python-pip libssl-dev -y && \
     pip install --upgrade pip && \
