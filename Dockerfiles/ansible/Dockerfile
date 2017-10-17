@@ -16,4 +16,5 @@ RUN apt update && \
     pip install --upgrade wrapt debtcollector pytz && \
     pip install --upgrade debtcollector monotonic && \
     pip install --upgrade netaddr shade functools32 && \
-    pip install --upgrade ansible
+    pip install --upgrade ansible && \
+    apt clean all
