@@ -2,6 +2,6 @@
 docker run -ti \
 --name local_mirror \
 -h localmirror.home.jab \
--v /media/storage-00/local_repo/:/var/www/ \
--p 192.168.111.251:80:80 \
+-v $2:/var/www/ \
+-p $1:80:80 \
 narigacdo/local_mirror
