@@ -4,7 +4,7 @@ MAINTAINER narigacdo
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive && \
 	apt-get install -q -y --no-install-recommends vim-puppet vim-addon-manager vim-python-jedi vim-rails vim-scripts\
-	vim-syntax-docker telnet autossh clusterssh sshpass \
+	vim-syntax-docker telnet autossh clusterssh sshpass iputils-ping \
 	vim git tmux openssh-server sudo virtinst libosinfo-bin libguestfs-tools virt-top qemu-utils libvirt-bin \
 	libsasl2-dev libldap2-dev libssl-dev python-dev build-essential python-virtualenv python-pip libssl-dev && \
 	apt-get clean all && \
