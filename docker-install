@@ -19,15 +19,14 @@ get_so(){
 }
 
 if_centos(){
-tee /etc/yum.repos.d/docker.repo <<-'EOF'
-[dockerrepo]
-name=Docker Repository
-baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
-enabled=1
-gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg
-EOF
-	yum install docker-engine -y
+	yum install -y yum-utils lvm2 \
+		device-mapper-persistent-data
+
+	yum-config-manager --add-repo \
+		https://download.docker.com/linux/centos/docker-ce.repo
+
+	yum-config-manager --enable docker-ce-edge
+	yum install docker-ce -y
 }
 
 if_rhel(){
