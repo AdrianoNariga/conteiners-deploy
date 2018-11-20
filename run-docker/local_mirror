@@ -1,7 +1,7 @@
 #!/bin/bash
 docker run -ti \
 --name local_mirror \
--h localmirror.home.jab \
+-h localmirror.home.stc \
 -v $2:/var/www/ \
 -p $1:80:80 \
 narigacdo/local_mirror
