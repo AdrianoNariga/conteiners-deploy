@@ -55,3 +55,4 @@ create_repo
 echo "-----> Atualizando repomd.xml de $BASEDIR"
 createrepo --update $BASEDIR
 rm -rf /var/tmp/createrepo* -v
+date >> $BASEDIR/date_exec.log

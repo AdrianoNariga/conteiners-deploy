@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -e TZ=America/Sao_Paulo --name offrepo-centos7 -ti -v /var/lib/docker/offline-repo/centos7/:/media/repo offrepo-centos7
