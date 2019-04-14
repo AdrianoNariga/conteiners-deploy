@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -e TZ=America/Sao_Paulo --name offrepo-rhel7 -ti -v /var/lib/docker/offline-repo/rhel7/:/media/repo offrepo-rhel7
