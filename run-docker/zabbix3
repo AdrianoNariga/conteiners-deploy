@@ -20,8 +20,8 @@ docker run \
     -d \
     --restart always \
     --name zabbix \
-    -p 192.168.111.8:80:80 \
-    -p 192.168.111.9:10051:10051 \
+    -p 192.168.111.7:80:80 \
+    -p 192.168.111.7:10051:10051 \
     --link zabbix-db:zabbix.db \
     --env="ZS_DBHost=zabbix.db" \
     --env="ZS_DBUser=zabbix" \

@@ -1,7 +1,8 @@
 #!/bin/bash
 # bash transmission 192.168.111.14 /storage/dlna/
 docker run -ti \
---name transmission -p $1:80:9091 \
+--name transmission \
+-p $1:80:9091 \
 --restart always \
 -v $2:/var/lib/transmission-daemon/downloads/ \
 dperson/transmission
