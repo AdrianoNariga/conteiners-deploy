@@ -1,0 +1,29 @@
+#!/bin/bash
+# https://stato.blog.br/wordpress/deploy-ambiente-zabbix-utilizando-docker/
+# https://medium.com/@leandrobarbosa_52157/how-install-zabbix-with-docker-794f39ab7665
+docker run \
+	--name your_zabbix-server_container_name \
+	-p 10051:10051 \
+	-p 10050:10050 \
+	-e DB_SERVER_HOST=”YOUR_DB_IP” \
+	-e MYSQL_USER=”YOUR_DB_USER” \
+	-e MYSQL_PASSWORD=”YOUR_DB_PASS” \
+	-d zabbix/zabbix-server-mysql:latest
+
+
+docker run \
+	--name your_zabbix-web-nginx-mysql_container_name \
+	--link your_zabbix-server_container_name:your_zabbix-server_container_name \
+	-p 80:80 \
+	-e DB_SERVER_HOST=”YOUR_DB_IP” \
+	-e MYSQL_USER=”YOUR_DB_USER” \
+	-e MYSQL_PASSWORD=”YOUR_DB_PASS” \
+	-e ZBX_SERVER_HOST=”ZABBIX_SERVER_HOST” \
+	-e PHP_TZ=”YOUT_TIME_ZONE” \
+	-d zabbix/zabbix-web-nginx-mysql:latest
+
+docker run \
+	--name zabbix-agent \
+	-e ZBX_HOSTNAME=”MONITORED_SERVER_NAME” \
+	-e ZBX_SERVER_HOST=”ZABBIX_SERVER” \
+	-d zabbix/zabbix-agent:latest
