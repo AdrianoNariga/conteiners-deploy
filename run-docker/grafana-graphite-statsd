@@ -1,0 +1,3 @@
+#!/bin/bash
+docker run -d --name=grafana -p $1:3000:3000 grafana/grafana
+docker run -d --name=graphite --restart=always -p $1:81:81 -p $1:8125:8125/udp hopsoft/graphite-statsd
