@@ -1,0 +1,2 @@
+#!/bin/bash
+podman run -e TZ=America/Sao_Paulo --name offrepo-rhel6 -ti -v /var/lib/mysql/rhel6/:/media/repo localhost/rhel6-repo-download

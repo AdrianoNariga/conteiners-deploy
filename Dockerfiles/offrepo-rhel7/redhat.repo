@@ -174,7 +174,7 @@ sslverify = 1
 name = Red Hat OpenStack Platform 14 for RHEL 7 (RPMs)
 sslclientkey = /etc/pki/entitlement-host/2331483668707306900-key.pem
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-enabled = 1
+enabled = 0
 sslcacert = /etc/rhsm-host/ca/redhat-uep.pem
 gpgcheck = 1
 
